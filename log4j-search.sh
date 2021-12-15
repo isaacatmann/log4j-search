@@ -16,10 +16,10 @@ frequency=7
 
 # Set a kill date where we don't run a search any more.  This process is resource intensive and eventually the need for
 # this running will deminish.  If the Date is after the kill date we'll just report Expired back to Jamf.
-killDate=2/01/2022
+killDate=02/01/2022
 killDateDelta=$(((`date -jf %m/%d/%Y "$killDate" +%s` - `date +%s`)/86400))
 
-if [[ $timerDelta -le 0 ]]; then
+if [[ $killDateDelta -le 0 ]]; then
   echo "<result>Expired</result>"
   exit
 fi
