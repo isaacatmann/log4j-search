@@ -1,6 +1,6 @@
 #!/bin/zsh
 ###############################################################################
-# Log4j Vulnerability Check Extension Attribute
+# Log4j Vulnerability Audit Extension Attribute
 # Created by: Mann Consulting (support@mann.com)
 # For support or updates contact support@mann.com
 ###############################################################################
@@ -13,6 +13,16 @@ versionPatched=2.16.0
 
 # Integer, how often we run a full search.
 frequency=7
+
+# Set a kill date where we don't run a search any more.  This process is resource intensive and eventually the need for
+# this running will deminish.  If the Date is after the kill date we'll just report Expired back to Jamf.
+killDate=2/01/2022
+killDateDelta=$(((`date -jf %m/%d/%Y "$killDate" +%s` - `date +%s`)/86400))
+
+if [[ $timerDelta -le 0 ]]; then
+  echo "<result>Expired</result>"
+  exit
+fi
 
 # Make a folder to store our caches.
 if [[ ! -d "/Library/Application Support/JAMF/eacache" ]]; then
