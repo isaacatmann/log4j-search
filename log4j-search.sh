@@ -22,7 +22,7 @@ fi
 # Check if the cache file is older than the frequency check and run a full search if it is.
 if [[ $(find "$touchFile" -mtime +${frequency} -print 2>/dev/null) ]] || [[ ! -f "$eaCache" ]]; then
   # Search the user data volume ONLY for anything log4j related
-  output=$(find /System/Volumes/Data -name "log4j*.jar" -mount 2>/dev/null)
+  output=$(find /System/Volumes/Data -name "log4j-core*.jar" -mount 2>/dev/null)
   echo "$output" > $eaCache
   outputarray=("${(@f)$(cat $eaCache)}")
   echo "$output" > $eaCache
@@ -35,6 +35,13 @@ fi
 for i in $outputarray[@];do
   versionFound=$(basename $i .jar | sed 's/.*-\([0-9\.][0-9\.]*\).*/\1/')
   versionPass=$(printf '%s\n%s\n' "$versionFound" "$versionPatched" | sort -V | tail -n 1)
+
+  if [[ ! -f $i ]];then
+    continue
+  elif ! unzip -l $i | grep -q JndiLookup.class 2>/dev/null; then
+    continue
+  fi
+
   if [[ $versionPass == $versionPatched ]]; then
     result+="$i;"
   fi
