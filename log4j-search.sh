@@ -40,6 +40,8 @@ for i in $outputarray[@];do
     continue
   elif ! unzip -l $i | grep -q JndiLookup.class 2>/dev/null; then
     continue
+  elif [[ $versionFound == $versionPass ]];then
+    continue
   fi
 
   if [[ $versionPass == $versionPatched ]]; then
