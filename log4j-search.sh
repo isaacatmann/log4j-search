@@ -12,22 +12,22 @@ eaCache="/Library/Application Support/JAMF/eaCache/log4jsearch"
 versionPatched=2.16.0
 
 # Integer, how often we run a full search.
-frequancy=7
+frequency=7
 
 # Make a folder to store our caches.
 if [[ ! -d "/Library/Application Support/JAMF/eacache" ]]; then
   mkdir -p "/Library/Application Support/JAMF/eacache"
 fi
 
-# Check if cache file is older than frequancy check and run a full search if it is.
-if [[ $(find "$touchFile" -mtime +${frequancy} -print 2>/dev/null) ]] || [[ ! -f "$eaCache" ]]; then
+# Check if the cache file is older than the frequency check and run a full search if it is.
+if [[ $(find "$touchFile" -mtime +${frequency} -print 2>/dev/null) ]] || [[ ! -f "$eaCache" ]]; then
   # Search the user data volume ONLY for anything log4j related
   output=$(find /System/Volumes/Data -name "log4j*.jar" -mount 2>/dev/null)
   echo "$output" > $eaCache
   outputarray=("${(@f)$(cat $eaCache)}")
   echo "$output" > $eaCache
 else
-  # Cache file is used if it's newer than our frequancy.
+  # Cache file is used if it's newer than our frequency.
   outputarray=("${(@f)$(cat $eaCache)}")
 fi
 
@@ -40,7 +40,7 @@ for i in $outputarray[@];do
   fi
 done
 
-# Output Pass if no vulnerable versions are found, otherwise a semi colin delimited list of vulnerable versions.
+# Output Pass if no vulnerable versions are found, otherwise a semicolon delimited list of vulnerable versions.
 if [[ -z $result ]];then
   echo "<result>Pass</result>"
 else
