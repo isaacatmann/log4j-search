@@ -6,7 +6,7 @@
 ###############################################################################
 
 # Cache file
-eaCache="/Library/Application Support/JAMF/eaCache/log4jsearch"
+eaCache="/Library/Application Support/JAMF/eacache/log4jsearch"
 
 # Version where the issue is patched
 versionPatched=2.16.0
