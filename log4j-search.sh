@@ -33,7 +33,7 @@ fi
 
 # Figure out if the versions on the system are older than our vulnerable version.
 for i in $outputarray[@];do
-  versionFound=$(basename $i .jar | cut -d '-' -f 3)
+  versionFound=$(basename $i .jar | sed 's/.*-\([0-9\.][0-9\.]*\).*/\1/')
   versionPass=$(printf '%s\n%s\n' "$versionFound" "$versionPatched" | sort -V | tail -n 1)
   if [[ $versionPass == $versionPatched ]]; then
     result+="$i;"
