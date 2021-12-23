@@ -30,7 +30,7 @@ if [[ ! -d "/Library/Application Support/JAMF/eacache" ]]; then
 fi
 
 # Check if the cache file is older than the frequency check and run a full search if it is.
-if [[ $(find "$touchFile" -mtime +${frequency} -print 2>/dev/null) ]] || [[ ! -f "$eaCache" ]]; then
+if [[ $(find "$eaCache" -mtime +${frequency} -print 2>/dev/null) ]] || [[ ! -f "$eaCache" ]]; then
   # Search the user data volume ONLY for anything log4j related
   output=$(find /System/Volumes/Data -name "log4j-core*.jar" -mount 2>/dev/null)
   echo "$output" > $eaCache
